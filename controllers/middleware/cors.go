@@ -17,4 +17,5 @@ func CORSMiddleware(c *gin.Context) {
 		AllowWebSockets:  true,
 		MaxAge:           12 * time.Hour,
 	})
+	c.Next()
 }

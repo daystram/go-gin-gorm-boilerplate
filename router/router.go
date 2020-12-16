@@ -26,5 +26,5 @@ func InitializeRouter() (router *gin.Engine) {
 			user.POST("/", v1.POSTUser)
 		}
 	}
-	return:Q
+	return
 }
