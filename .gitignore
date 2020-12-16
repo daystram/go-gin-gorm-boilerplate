@@ -228,4 +228,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Air
+tmp/
+
 # End of https://www.toptal.com/developers/gitignore/api/go,visualstudiocode,intellij+all,linux,macos,windows,vim,git
