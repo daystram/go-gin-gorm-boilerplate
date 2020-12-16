@@ -1,0 +1,6 @@
+port: 8080
+environment: dev
+debug: true
+
+domain: example.com
+secret: secret1234
