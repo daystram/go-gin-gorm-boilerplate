@@ -1,6 +1,8 @@
 package config
 
 import (
+	"log"
+
 	"github.com/spf13/viper"
 )
 
@@ -10,6 +12,12 @@ type Config struct {
 	Port        int
 	Environment string
 	Debug       bool
+
+	DBHostname string
+	DBPort     int
+	DBDatabase string
+	DBUsername string
+	DBPassword string
 
 	Domain    string
 	JWTSecret string
@@ -23,7 +31,7 @@ func InitializeAppConfig() {
 	viper.AddConfigPath("/")
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(err)
+		log.Fatalf("[INIT] Unable to load configuration. %+v\n", err)
 	}
 
 	// Port
@@ -31,19 +39,44 @@ func InitializeAppConfig() {
 
 	// Environment
 	if AppConfig.Environment = viper.GetString("environment"); AppConfig.Environment == "" {
-		panic("environment is missing in config.yaml")
-	}
-
-	// Domain
-	if AppConfig.Domain = viper.GetString("domain"); AppConfig.Domain == "" {
-		panic("domain is missing in config.yaml")
+		log.Fatalln("[INIT] environment is missing in config.yaml")
 	}
 
 	// Debug
 	AppConfig.Debug = viper.GetBool("debug")
 
+	// DBHostname
+	if AppConfig.DBHostname = viper.GetString("db_hostname"); AppConfig.DBHostname == "" {
+		log.Fatalln("[INIT] db_hostname is missing in config.yaml")
+	}
+
+	// DBPort
+	AppConfig.DBPort = viper.GetInt("db_port")
+
+	// DBDatabase
+	if AppConfig.DBDatabase = viper.GetString("db_database"); AppConfig.DBDatabase == "" {
+		log.Fatalln("[INIT] db_database is missing in config.yaml")
+	}
+
+	// DBUsername
+	if AppConfig.DBUsername = viper.GetString("db_username"); AppConfig.DBUsername == "" {
+		log.Fatalln("[INIT] db_username is missing in config.yaml")
+	}
+
+	// DBPassword
+	if AppConfig.DBPassword = viper.GetString("db_password"); AppConfig.DBPassword == "" {
+		log.Fatalln("[INIT] db_password is missing in config.yaml")
+	}
+
+	// Domain
+	if AppConfig.Domain = viper.GetString("domain"); AppConfig.Domain == "" {
+		log.Fatalln("[INIT] domain is missing in config.yaml")
+	}
+
 	// JWTSecret
 	if AppConfig.JWTSecret = viper.GetString("secret"); AppConfig.JWTSecret == "" {
-		panic("secret is missing in config.yaml")
+		log.Fatalln("[INIT] secret is missing in config.yaml")
 	}
+
+	log.Printf("[INIT] Configuration loaded from %s\n", viper.ConfigFileUsed())
 }
