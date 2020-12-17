@@ -6,6 +6,6 @@ func GETUser(c *gin.Context) {
 
 }
 
-func POSTUser(c *gin.Context) {
+func PUTUser(c *gin.Context) {
 
 }
