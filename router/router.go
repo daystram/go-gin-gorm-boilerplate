@@ -9,7 +9,7 @@ import (
 
 func InitializeRouter() (router *gin.Engine) {
 	router = gin.Default()
-	v1route := router.Group("/v1")
+	v1route := router.Group("/api/v1")
 	v1route.Use(
 		middleware.CORSMiddleware,
 		middleware.AuthMiddleware,
@@ -22,8 +22,8 @@ func InitializeRouter() (router *gin.Engine) {
 		}
 		user := v1route.Group("/user")
 		{
-			user.GET("/:id", v1.GETUser)
-			user.PUT("/", v1.PUTUser)
+			user.GET("/:username", v1.GETUser)
+			user.PUT("", v1.PUTUser)
 		}
 	}
 	return
