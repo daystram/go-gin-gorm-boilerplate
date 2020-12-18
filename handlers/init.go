@@ -8,13 +8,18 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/daystram/go-gin-gorm-boilerplate/config"
+	"github.com/daystram/go-gin-gorm-boilerplate/datatransfers"
 	"github.com/daystram/go-gin-gorm-boilerplate/models"
 )
 
 var Handler HandlerFunc
 
 type HandlerFunc interface {
-	RetrieveUser()
+	AuthenticateUser(credentials datatransfers.UserLogin) (token string, err error)
+	RegisterUser(credentials datatransfers.UserSignup) (err error)
+
+	RetrieveUser(username string) (user models.User, err error)
+	UpdateUser(id uint, user datatransfers.UserUpdate) (err error)
 }
 
 type module struct {
