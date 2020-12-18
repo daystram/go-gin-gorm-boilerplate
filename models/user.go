@@ -11,19 +11,19 @@ type userOrm struct {
 }
 
 type User struct {
-	ID        uint   `gorm:"primaryKey"`
-	Username  string `gorm:"uniqueIndex"`
-	Email     string `gorm:"unique"`
-	Password  string
-	Bio       string
-	CreatedAt time.Time `gorm:"autoCreateTime"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime"`
+	ID        uint      `gorm:"primaryKey" json:"-"`
+	Username  string    `gorm:"uniqueIndex" json:"-"`
+	Email     string    `gorm:"unique" json:"-"`
+	Password  string    `json:"-"`
+	Bio       string    `json:"-"`
+	CreatedAt time.Time `gorm:"autoCreateTime" json:"-"`
+	UpdatedAt time.Time `gorm:"autoUpdateTime" json:"-"`
 }
 
 type UserOrmer interface {
 	GetOneByID(id uint) (user User, err error)
 	GetOneByUsername(username string) (user User, err error)
-	InsertUser(user User) (ID uint, err error)
+	InsertUser(user User) (id uint, err error)
 	UpdateUser(user User) (err error)
 }
 
@@ -31,7 +31,6 @@ func NewUserOrmer(db *gorm.DB) UserOrmer {
 	//_ = db.AutoMigrate(&User{})		// builds table when enabled
 	return &userOrm{db}
 }
-
 
 func (o *userOrm) GetOneByID(id uint) (user User, err error) {
 	result := o.db.Model(&User{}).Where("id = ?", id).First(&user)
@@ -43,13 +42,13 @@ func (o *userOrm) GetOneByUsername(username string) (user User, err error) {
 	return user, result.Error
 }
 
-
-func (o *userOrm) InsertUser(user User) (ID uint, err error) {
-	result := o.db.Create(user)
+func (o *userOrm) InsertUser(user User) (id uint, err error) {
+	result := o.db.Model(&User{}).Create(&user)
 	return user.ID, result.Error
 }
 
 func (o *userOrm) UpdateUser(user User) (err error) {
-	result := o.db.Updates(user)
+	// By default, only non-empty fields are updated. See https://gorm.io/docs/update.html#Updates-multiple-columns
+	result := o.db.Model(&User{}).Model(&user).Updates(&user)
 	return result.Error
 }
