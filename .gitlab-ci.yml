@@ -1,0 +1,35 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  image: daystram/go-builder:1.15
+  script:
+    - go mod tidy
+    - go build -a -v -o app .
+  artifacts:
+    paths:
+      - app
+
+test:
+  stage: test
+  image: daystram/go-builder:1.15
+  dependencies:
+    - build
+  script:
+    - go test ./tests/...
+
+deploy:
+  stage: deploy
+  image: docker:19.03.12
+  needs: ["test"]
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  services:
+    - docker:19.03.12-dind
+  script:
+    - docker build --tag $CI_REGISTRY_IMAGE:$VERSION .
+    - docker push $CI_REGISTRY_IMAGE:$VERSION
+  when: manual
