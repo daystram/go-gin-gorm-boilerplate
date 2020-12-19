@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/daystram/go-gin-gorm-boilerplate/constants"
 	"github.com/daystram/go-gin-gorm-boilerplate/datatransfers"
 	"github.com/daystram/go-gin-gorm-boilerplate/handlers"
 	"github.com/daystram/go-gin-gorm-boilerplate/models"
@@ -38,7 +39,7 @@ func PUTUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, datatransfers.Response{Error: err.Error()})
 		return
 	}
-	if err = handlers.Handler.UpdateUser(1, user); err != nil {
+	if err = handlers.Handler.UpdateUser(uint(c.GetInt(constants.IsAuthenticatedKey)), user); err != nil {
 		c.JSON(http.StatusBadRequest, datatransfers.Response{Error: "failed updating user"})
 		return
 	}

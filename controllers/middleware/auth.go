@@ -9,13 +9,14 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/daystram/go-gin-gorm-boilerplate/config"
+	"github.com/daystram/go-gin-gorm-boilerplate/constants"
 	"github.com/daystram/go-gin-gorm-boilerplate/datatransfers"
 )
 
 func AuthMiddleware(c *gin.Context) {
 	token := strings.TrimPrefix(c.GetHeader("Authorization"), "Bearer ")
 	if token == "" {
-		c.Set("authenticated", false)
+		c.Set(constants.IsAuthenticatedKey, false)
 		c.Next()
 		return
 	}
@@ -24,8 +25,8 @@ func AuthMiddleware(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, datatransfers.Response{Error: err.Error()})
 		return
 	}
-	c.Set("authenticated", true)
-	c.Set("user_id", claims.ID)
+	c.Set(constants.IsAuthenticatedKey, true)
+	c.Set(constants.UserIDKey, claims.ID)
 	c.Next()
 }
 
