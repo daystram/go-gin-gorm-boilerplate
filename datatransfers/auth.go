@@ -16,9 +16,8 @@ func (c JWTClaims) Valid() (err error) {
 	if now.After(time.Unix(c.ExpiresAt, 0)) {
 		err = errors.New("token has expired")
 	}
-	if now.Before(time.Unix(c.ExpiresAt, 0)) {
+	if now.Before(time.Unix(c.IssuedAt, 0)) {
 		err = errors.New("token used before issued")
 	}
 	return err
 }
-

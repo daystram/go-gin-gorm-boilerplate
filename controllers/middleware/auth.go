@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -31,10 +32,10 @@ func AuthMiddleware(c *gin.Context) {
 }
 
 func parseToken(tokenString, secret string) (claims datatransfers.JWTClaims, err error) {
-	if token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+	if token, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secret), nil
 	}); err != nil || !token.Valid {
-		return datatransfers.JWTClaims{}, errors.New("failed parsing token")
+		return datatransfers.JWTClaims{}, errors.New(fmt.Sprintf("invalid token. %s", err))
 	}
 	return
 }
