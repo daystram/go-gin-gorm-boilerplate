@@ -41,7 +41,6 @@ func generateToken(user models.User) (string, error) {
 func (m *module) RegisterUser(credentials datatransfers.UserSignup) (err error) {
 	var hashedPassword []byte
 	if hashedPassword, err = bcrypt.GenerateFromPassword([]byte(credentials.Password), bcrypt.DefaultCost); err != nil {
-		log.Print(err)
 		return errors.New("failed hashing password")
 	}
 	if _, err = m.db.userOrmer.InsertUser(models.User{
