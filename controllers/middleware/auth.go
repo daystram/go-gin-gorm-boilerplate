@@ -15,7 +15,8 @@ import (
 func AuthMiddleware(c *gin.Context) {
 	token := strings.TrimPrefix(c.GetHeader("Authorization"), "Bearer ")
 	if token == "" {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, datatransfers.Response{Error: "access token not provided"})
+		c.Set("authenticated", false)
+		c.Next()
 		return
 	}
 	claims, err := parseToken(token, config.AppConfig.JWTSecret)

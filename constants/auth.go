@@ -1,6 +1,8 @@
 package constants
 
-import "time"
+import (
+	"time"
+)
 
 const (
 	AuthenticationTimeout = time.Hour * 24 * 2

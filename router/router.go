@@ -5,6 +5,7 @@ import (
 
 	"github.com/daystram/go-gin-gorm-boilerplate/controllers/middleware"
 	"github.com/daystram/go-gin-gorm-boilerplate/controllers/v1"
+	"github.com/daystram/go-gin-gorm-boilerplate/utils"
 )
 
 func InitializeRouter() (router *gin.Engine) {
@@ -22,8 +23,8 @@ func InitializeRouter() (router *gin.Engine) {
 		}
 		user := v1route.Group("/user")
 		{
-			user.GET("/:username", v1.GETUser)
-			user.PUT("", v1.PUTUser)
+			user.GET("/:username", utils.AuthOnly, v1.GETUser)
+			user.PUT("", utils.AuthOnly, v1.PUTUser)
 		}
 	}
 	return
