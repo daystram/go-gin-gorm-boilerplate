@@ -3,14 +3,14 @@ package handlers
 import (
 	"errors"
 	"fmt"
-	"github.com/daystram/go-gin-gorm-boilerplate/config"
-	"github.com/daystram/go-gin-gorm-boilerplate/constants"
-	"github.com/dgrijalva/jwt-go"
 	"log"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 
+	"github.com/daystram/go-gin-gorm-boilerplate/config"
+	"github.com/daystram/go-gin-gorm-boilerplate/constants"
 	"github.com/daystram/go-gin-gorm-boilerplate/datatransfers"
 	"github.com/daystram/go-gin-gorm-boilerplate/models"
 )
