@@ -3,7 +3,11 @@ package handlers
 import (
 	"errors"
 	"fmt"
+	"github.com/daystram/go-gin-gorm-boilerplate/config"
+	"github.com/daystram/go-gin-gorm-boilerplate/constants"
+	"github.com/dgrijalva/jwt-go"
 	"log"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -19,7 +23,19 @@ func (m *module) AuthenticateUser(credentials datatransfers.UserLogin) (token st
 	if err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(credentials.Password)); err != nil {
 		return "", errors.New("incorrect credentials")
 	}
-	return "OK", nil
+
+	return generateToken(user)
+}
+
+func generateToken(user models.User) (string, error) {
+	now := time.Now()
+	expiry := time.Now().Add(constants.AuthenticationTimeout)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, datatransfers.JWTClaims{
+		ID:        user.ID,
+		ExpiresAt: expiry.Unix(),
+		IssuedAt:  now.Unix(),
+	})
+	return token.SignedString([]byte(config.AppConfig.JWTSecret))
 }
 
 func (m *module) RegisterUser(credentials datatransfers.UserSignup) (err error) {
