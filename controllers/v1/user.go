@@ -20,7 +20,7 @@ func GETUser(c *gin.Context) {
 	}
 	var user models.User
 	if user, err = handlers.Handler.RetrieveUser(userInfo.Username); err != nil {
-		c.JSON(http.StatusUnauthorized, datatransfers.Response{Error: "cannot find user"})
+		c.JSON(http.StatusNotFound, datatransfers.Response{Error: "cannot find user"})
 		return
 	}
 	c.JSON(http.StatusOK, datatransfers.Response{Data: datatransfers.UserInfo{
@@ -40,9 +40,9 @@ func PUTUser(c *gin.Context) {
 		return
 	}
 	if err = handlers.Handler.UpdateUser(uint(c.GetInt(constants.IsAuthenticatedKey)), user); err != nil {
-		c.JSON(http.StatusBadRequest, datatransfers.Response{Error: "failed updating user"})
+		c.JSON(http.StatusNotModified, datatransfers.Response{Error: "failed updating user"})
 		return
 	}
-	c.JSON(http.StatusOK, datatransfers.Response{Data: "OK"})
+	c.JSON(http.StatusOK, datatransfers.Response{Data: user})
 	return
 }

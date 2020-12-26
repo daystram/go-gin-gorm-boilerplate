@@ -37,6 +37,6 @@ func POSTRegister(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, datatransfers.Response{Error: "failed registering user"})
 		return
 	}
-	c.JSON(http.StatusOK, datatransfers.Response{Data: "user created"})
+	c.JSON(http.StatusCreated, datatransfers.Response{Data: "user created"})
 	return
 }
