@@ -6,7 +6,7 @@ import (
 )
 
 type JWTClaims struct {
-	ID        uint  `json:"id,omitempty"`
+	ID        uint  `json:"sub,omitempty"`
 	ExpiresAt int64 `json:"exp,omitempty"`
 	IssuedAt  int64 `json:"iat,omitempty"`
 }

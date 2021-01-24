@@ -37,7 +37,7 @@ func InitializeHandler() {
 	// Initialize DB
 	var db *gorm.DB
 	db, err = gorm.Open(postgres.Open(
-		fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		fmt.Sprintf("host=%s port=%d dbname=%s user=%s password=%s sslmode=disable",
 			config.AppConfig.DBHostname, config.AppConfig.DBPort, config.AppConfig.DBDatabase,
 			config.AppConfig.DBUsername, config.AppConfig.DBPassword),
 	), &gorm.Config{})
