@@ -50,7 +50,7 @@ func (m *module) RegisterUser(credentials datatransfers.UserSignup) (err error) 
 		Bio:      credentials.Bio,
 	}); err != nil {
 		log.Print(err)
-		return errors.New(fmt.Sprintf("error inserting user. %v", err))
+		return fmt.Errorf("error inserting user. %v", err)
 	}
 	return
 }

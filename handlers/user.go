@@ -10,7 +10,7 @@ import (
 
 func (m *module) RetrieveUser(username string) (user models.User, err error) {
 	if user, err = m.db.userOrmer.GetOneByUsername(username); err != nil {
-		return models.User{}, errors.New(fmt.Sprintf("cannot find user with username %s", username))
+		return models.User{}, fmt.Errorf("cannot find user with username %s", username)
 	}
 	return
 }

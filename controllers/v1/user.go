@@ -29,7 +29,6 @@ func GETUser(c *gin.Context) {
 		Bio:       user.Bio,
 		CreatedAt: user.CreatedAt,
 	}})
-	return
 }
 
 func PUTUser(c *gin.Context) {
@@ -44,5 +43,4 @@ func PUTUser(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, datatransfers.Response{Data: user})
-	return
 }

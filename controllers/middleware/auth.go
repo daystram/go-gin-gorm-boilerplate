@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -35,7 +34,7 @@ func parseToken(tokenString, secret string) (claims datatransfers.JWTClaims, err
 	if token, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(secret), nil
 	}); err != nil || !token.Valid {
-		return datatransfers.JWTClaims{}, errors.New(fmt.Sprintf("invalid token. %s", err))
+		return datatransfers.JWTClaims{}, fmt.Errorf("invalid token. %s", err)
 	}
 	return
 }

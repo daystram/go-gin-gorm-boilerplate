@@ -23,7 +23,6 @@ func POSTLogin(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, datatransfers.Response{Data: fmt.Sprintf("Bearer %s", token)})
-	return
 }
 
 func POSTRegister(c *gin.Context) {
@@ -38,5 +37,4 @@ func POSTRegister(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, datatransfers.Response{Data: "user created"})
-	return
 }
