@@ -4,14 +4,12 @@ go 1.16
 
 require (
 	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
-	github.com/fsnotify/fsnotify v1.4.9 // indirect
+	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/gin-contrib/cors v1.3.1
-	github.com/gin-gonic/gin v1.6.3
-	github.com/pelletier/go-toml v1.8.1 // indirect
-	github.com/spf13/viper v1.7.1
-	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
-	golang.org/x/sys v0.0.0-20201214210602-f9fddec55a1e // indirect
-	gopkg.in/yaml.v2 v2.3.0 // indirect
-	gorm.io/driver/postgres v1.0.5
-	gorm.io/gorm v1.20.8
+	github.com/gin-gonic/gin v1.7.4
+	github.com/spf13/viper v1.8.1
+	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
+	golang.org/x/sys v0.0.0-20210902050250-f475640dd07b // indirect
+	gorm.io/driver/postgres v1.1.0
+	gorm.io/gorm v1.21.14
 )
