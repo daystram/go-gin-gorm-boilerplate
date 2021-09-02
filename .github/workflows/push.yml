@@ -34,3 +34,17 @@ jobs:
           name: build-be
           path: |
             app
+  test-be:
+    name: Test
+    runs-on: Ubuntu-20.04
+    container: daystram/go-builder:1.16
+    defaults:
+      run:
+        working-directory: ./
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: go mod tidy
+      - name: Test
+        run: go test ./...
