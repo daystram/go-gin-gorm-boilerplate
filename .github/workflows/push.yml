@@ -37,6 +37,7 @@ jobs:
   test-be:
     name: Test
     runs-on: Ubuntu-20.04
+    needs: [build-be]
     container: daystram/go-builder:1.16
     defaults:
       run:
