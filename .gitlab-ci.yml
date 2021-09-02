@@ -5,7 +5,7 @@ stages:
 
 build:
   stage: build
-  image: daystram/go-builder:1.15
+  image: daystram/go-builder:1.16
   script:
     - go mod tidy
     - go build -a -o app .
@@ -15,7 +15,7 @@ build:
 
 test:
   stage: test
-  image: daystram/go-builder:1.15
+  image: daystram/go-builder:1.16
   dependencies:
     - build
   script:
