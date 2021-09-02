@@ -13,70 +13,36 @@ type Config struct {
 	Environment string
 	Debug       bool
 
-	DBHostname string
+	DBHost     string
 	DBPort     int
 	DBDatabase string
 	DBUsername string
 	DBPassword string
 
-	Domain    string
 	JWTSecret string
 }
 
 func InitializeAppConfig() {
-	viper.SetConfigName("config.yaml")
-	viper.SetConfigType("yaml")
+	viper.SetConfigName(".env") // allow directly reading from .env file
+	viper.SetConfigType("env")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("./config")
 	viper.AddConfigPath("/")
-	err := viper.ReadInConfig()
-	if err != nil {
-		log.Fatalf("[INIT] Unable to load configuration. %+v\n", err)
-	}
+	viper.AllowEmptyEnv(true)
+	viper.AutomaticEnv()
+	_ = viper.ReadInConfig()
 
-	// Port
-	AppConfig.Port = viper.GetInt("port")
+	AppConfig.Port = viper.GetInt("PORT")
+	AppConfig.Environment = viper.GetString("ENVIRONMENT")
+	AppConfig.Debug = viper.GetBool("DEBUG")
 
-	// Environment
-	if AppConfig.Environment = viper.GetString("environment"); AppConfig.Environment == "" {
-		log.Fatalln("[INIT] environment is missing in config.yaml")
-	}
+	AppConfig.DBHost = viper.GetString("DB_HOST")
+	AppConfig.DBPort = viper.GetInt("DB_PORT")
+	AppConfig.DBDatabase = viper.GetString("DB_DATABASE")
+	AppConfig.DBUsername = viper.GetString("DB_USERNAME")
+	AppConfig.DBPassword = viper.GetString("DB_PASSWORD")
 
-	// Debug
-	AppConfig.Debug = viper.GetBool("debug")
+	AppConfig.JWTSecret = viper.GetString("JWT_SECRET")
 
-	// DBHostname
-	if AppConfig.DBHostname = viper.GetString("db_hostname"); AppConfig.DBHostname == "" {
-		log.Fatalln("[INIT] db_hostname is missing in config.yaml")
-	}
-
-	// DBPort
-	AppConfig.DBPort = viper.GetInt("db_port")
-
-	// DBDatabase
-	if AppConfig.DBDatabase = viper.GetString("db_database"); AppConfig.DBDatabase == "" {
-		log.Fatalln("[INIT] db_database is missing in config.yaml")
-	}
-
-	// DBUsername
-	if AppConfig.DBUsername = viper.GetString("db_username"); AppConfig.DBUsername == "" {
-		log.Fatalln("[INIT] db_username is missing in config.yaml")
-	}
-
-	// DBPassword
-	if AppConfig.DBPassword = viper.GetString("db_password"); AppConfig.DBPassword == "" {
-		log.Fatalln("[INIT] db_password is missing in config.yaml")
-	}
-
-	// Domain
-	if AppConfig.Domain = viper.GetString("domain"); AppConfig.Domain == "" {
-		log.Fatalln("[INIT] domain is missing in config.yaml")
-	}
-
-	// JWTSecret
-	if AppConfig.JWTSecret = viper.GetString("secret"); AppConfig.JWTSecret == "" {
-		log.Fatalln("[INIT] secret is missing in config.yaml")
-	}
-
-	log.Printf("[INIT] Configuration loaded from %s\n", viper.ConfigFileUsed())
+	log.Println("[INIT] configuration loaded")
 }
