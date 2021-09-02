@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go/v4"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/daystram/go-gin-gorm-boilerplate/config"
@@ -44,10 +44,10 @@ func (m *module) RegisterUser(credentials datatransfers.UserSignup) (err error) 
 		return errors.New("failed hashing password")
 	}
 	if _, err = m.db.userOrmer.InsertUser(models.User{
-		Username:  credentials.Username,
-		Email:     credentials.Email,
-		Password:  string(hashedPassword),
-		Bio:       credentials.Bio,
+		Username: credentials.Username,
+		Email:    credentials.Email,
+		Password: string(hashedPassword),
+		Bio:      credentials.Bio,
 	}); err != nil {
 		log.Print(err)
 		return errors.New(fmt.Sprintf("error inserting user. %v", err))
