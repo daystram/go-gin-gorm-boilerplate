@@ -31,9 +31,7 @@ type dbEntity struct {
 	userOrmer models.UserOrmer
 }
 
-func InitializeHandler() {
-	var err error
-
+func InitializeHandler() (err error) {
 	// Initialize DB
 	var db *gorm.DB
 	db, err = gorm.Open(postgres.Open(
@@ -42,10 +40,10 @@ func InitializeHandler() {
 			config.AppConfig.DBUsername, config.AppConfig.DBPassword),
 	), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("[INIT] Failed connecting to PostgreSQL Database at %s:%d. %+v\n",
-			config.AppConfig.DBHost, config.AppConfig.DBPort, err)
+		log.Println("[INIT] failed connecting to PostgreSQL")
+		return
 	}
-	log.Printf("[INIT] Successfully connected to PostgreSQL Database\n")
+	log.Println("[INIT] connected to PostgreSQL")
 
 	// Compose handler modules
 	Handler = &module{
@@ -54,4 +52,5 @@ func InitializeHandler() {
 			userOrmer: models.NewUserOrmer(db),
 		},
 	}
+	return
 }
