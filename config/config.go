@@ -13,6 +13,7 @@ type Config struct {
 	Environment string
 	Debug       bool
 
+	DBDRIVER   string
 	DBHost     string
 	DBPort     int
 	DBDatabase string
@@ -36,6 +37,7 @@ func InitializeAppConfig() {
 	AppConfig.Environment = viper.GetString("ENVIRONMENT")
 	AppConfig.Debug = viper.GetBool("DEBUG")
 
+	AppConfig.DBDRIVER = viper.GetString("DB_DRIVER")
 	AppConfig.DBHost = viper.GetString("DB_HOST")
 	AppConfig.DBPort = viper.GetInt("DB_PORT")
 	AppConfig.DBDatabase = viper.GetString("DB_DATABASE")
