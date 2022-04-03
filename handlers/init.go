@@ -3,7 +3,9 @@ package handlers
 import (
 	"fmt"
 	"log"
+	"os"
 
+	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
@@ -34,16 +36,33 @@ type dbEntity struct {
 func InitializeHandler() (err error) {
 	// Initialize DB
 	var db *gorm.DB
-	db, err = gorm.Open(postgres.Open(
-		fmt.Sprintf("host=%s port=%d dbname=%s user=%s password=%s sslmode=disable",
-			config.AppConfig.DBHost, config.AppConfig.DBPort, config.AppConfig.DBDatabase,
-			config.AppConfig.DBUsername, config.AppConfig.DBPassword),
-	), &gorm.Config{})
-	if err != nil {
-		log.Println("[INIT] failed connecting to PostgreSQL")
-		return
+	switch config.AppConfig.DBDRIVER {
+	case "postgres":
+		db, err = gorm.Open(postgres.Open(
+			fmt.Sprintf("host=%s port=%d dbname=%s user=%s password=%s sslmode=disable",
+				config.AppConfig.DBHost, config.AppConfig.DBPort, config.AppConfig.DBDatabase,
+				config.AppConfig.DBUsername, config.AppConfig.DBPassword),
+		), &gorm.Config{})
+		if err != nil {
+			log.Println("[INIT] failed connecting to PostgreSQL")
+			return
+		}
+		log.Println("[INIT] connected to PostgreSQL")
+	case "mysql":
+		db, err = gorm.Open(mysql.Open(
+			fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+				config.AppConfig.DBUsername, config.AppConfig.DBPassword, config.AppConfig.DBHost,
+				config.AppConfig.DBPort, config.AppConfig.DBDatabase),
+		), &gorm.Config{})
+		if err != nil {
+			log.Println("[INIT] failed connecting to MySQL")
+			return
+		}
+		log.Println("[INIT] connected to MySQL")
+	default:
+		log.Println("DB Driver not specified or not supported. Possible options are: 'postgres' or 'mysql'")
+		os.Exit(1)
 	}
-	log.Println("[INIT] connected to PostgreSQL")
 
 	// Compose handler modules
 	Handler = &module{
